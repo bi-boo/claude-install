@@ -1,0 +1,870 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1440">
+<title>Claude Code 安装指南 · Windows 版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #FAF7F2;
+    --bg-warm:   #F2EBE1;
+    --bg-code:   #EDE5D8;
+    --text:      #1A1714;
+    --muted:     #7D7068;
+    --border:    #DDD4C6;
+    --accent:    #2563EB;
+    --serif:     'Noto Serif SC', 'STSong', 'Songti SC', Georgia, serif;
+    --sans:      'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --mono:      'JetBrains Mono', 'SF Mono', 'Consolas', 'Courier New', monospace;
+  }
+
+  html { background: #8BA4C0; }
+
+  body {
+    background: #8BA4C0;
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    padding: 48px;
+  }
+
+  code {
+    font-family: var(--mono);
+    font-size: 0.88em;
+    background: var(--bg-code);
+    padding: 1px 5px;
+    color: var(--text);
+  }
+
+  /* ════════════════ POSTER ════════════════ */
+  .poster {
+    width: 1440px;
+    margin: 0 auto;
+    background: var(--bg);
+    outline: 1px solid var(--border);
+  }
+
+  /* ── HEADER ── */
+  .ph {
+    background: #0F1729;
+    padding: 40px 56px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: 48px;
+  }
+
+  .ph-eyebrow {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .ph-title {
+    font-family: var(--serif);
+    font-size: 44px;
+    font-weight: 900;
+    color: #E8ECF2;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+
+  .ph-title em {
+    font-style: normal;
+    color: var(--accent);
+  }
+
+  .ph-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    margin-left: 14px;
+    vertical-align: middle;
+    letter-spacing: 0.05em;
+  }
+
+  .ph-desc {
+    font-size: 14px;
+    color: #8090A8;
+    margin-top: 12px;
+    line-height: 1.65;
+    max-width: 580px;
+  }
+
+  .ph-steps {
+    display: flex;
+    gap: 0;
+  }
+
+  .ph-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 0 24px;
+    border-right: 1px solid #1E2840;
+  }
+
+  .ph-step:last-child { border-right: none; }
+
+  .ph-step-num {
+    width: 30px;
+    height: 30px;
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: var(--mono);
+  }
+
+  .ph-step-label {
+    font-size: 11px;
+    color: #5A6878;
+    text-align: center;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+
+  /* ── ARCH ── */
+  .arch {
+    background: var(--bg-warm);
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 1fr 150px 1fr;
+  }
+
+  .arch-zone {
+    padding: 24px 44px;
+  }
+
+  .arch-zone-local { border-right: 1px solid var(--border); }
+  .arch-zone-remote { border-left: 1px solid var(--border); }
+
+  .arch-tag {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 5px;
+  }
+
+  .arch-name {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .arch-sub {
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .arch-roles {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .arch-role {
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  .arch-role::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  .arch-note {
+    font-size: 9.5px;
+    color: #A89D94;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--border);
+  }
+
+  .arch-mid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 16px 0;
+  }
+
+  .arch-key {
+    background: var(--accent);
+    color: #FFFFFF;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 3px 12px;
+  }
+
+  .arch-arrow {
+    font-size: 11px;
+    color: #B5A898;
+    text-align: center;
+    line-height: 1.6;
+  }
+
+  /* ── MAIN BODY: 2-col ── */
+  .pmain {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pcol {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .pcol:first-child { border-right: 1px solid var(--border); }
+
+  .psec {
+    padding: 28px 44px;
+    flex: 1;
+  }
+
+  .psec + .psec {
+    border-top: 1px solid var(--border);
+  }
+
+  .psec-hd {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 18px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .psec-num {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--accent);
+  }
+
+  .psec-title {
+    font-family: var(--serif);
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  /* ── STEPS ── */
+  .steps { display: flex; flex-direction: column; gap: 14px; }
+
+  .step {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .step-n {
+    width: 34px;
+    height: 34px;
+    background: var(--accent);
+    color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .step-action {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 4px;
+    line-height: 1.45;
+  }
+
+  .step-detail {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── AUTH TABLE ── */
+  .auth-note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    line-height: 1.65;
+  }
+
+  .auth-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .auth-table th {
+    text-align: left;
+    padding: 7px 10px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    background: var(--bg-code);
+    border: 1px solid var(--border);
+  }
+
+  .auth-table td {
+    padding: 9px 10px;
+    border: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--text);
+    vertical-align: middle;
+  }
+
+  .auth-table td.dim { color: var(--muted); font-size: 11px; }
+
+  .badge { display: inline-block; padding: 2px 9px; font-size: 11px; font-weight: 600; }
+  .badge-allow  { background: #E8F3EC; color: #2A6640; }
+  .badge-always { background: #E8EEF8; color: #2A4485; }
+  .badge-deny   { background: #F8ECEC; color: #7A2828; }
+
+  /* ── TERMINAL ── */
+  .term-intro {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+
+  .term {
+    background: #012456;
+    overflow: hidden;
+  }
+
+  .term-bar {
+    background: #001B3E;
+    padding: 9px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .term-bar-icon {
+    width: 14px;
+    height: 14px;
+    background: #2563EB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    color: white;
+    font-weight: 700;
+  }
+
+  .term-bar-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: #6A8AB0;
+  }
+
+  .term-body {
+    padding: 18px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .task-num {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #3A5A7A;
+    margin-bottom: 6px;
+  }
+
+  .t-input {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+
+  .t-chevron {
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 14px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .t-text {
+    font-family: var(--mono);
+    font-size: 11.5px;
+    color: #C0D0E0;
+    line-height: 1.6;
+  }
+
+  .t-resp {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .t-dot { width: 7px; height: 7px; border-radius: 50%; background: #28CA42; flex-shrink: 0; }
+
+  .t-resp-text {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: #5A7A9A;
+  }
+
+  .t-sep { border: none; border-top: 1px dashed #1A3456; }
+
+  /* ── COMMANDS ── */
+  .cmds {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .cmd {
+    padding: 11px 13px;
+    background: var(--bg-warm);
+    border: 1px solid var(--border);
+  }
+
+  .cmd-code {
+    font-family: var(--mono);
+    font-size: 13.5px;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 3px;
+  }
+
+  .cmd-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 2px;
+  }
+
+  .cmd-desc { font-size: 10.5px; color: var(--muted); line-height: 1.5; }
+
+  /* ── CONFIG STRIP ── */
+  .pconfig {
+    background: var(--bg-warm);
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 260px 1fr 1fr 1fr;
+  }
+
+  .pcc {
+    padding: 24px 32px;
+    border-right: 1px solid var(--border);
+  }
+
+  .pcc:last-child { border-right: none; }
+
+  .pcc-tree {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 2;
+    margin-top: 8px;
+  }
+
+  .pcc-root { color: var(--text); font-weight: 600; }
+  .pcc-comment { color: #B8A898; }
+
+  .pcc-path {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 5px;
+  }
+
+  .pcc-title {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 5px;
+  }
+
+  .pcc-desc {
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  /* ── FAQ ── */
+  .pfaq-hd {
+    padding: 18px 44px 12px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pfaq {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .pfaq-item {
+    padding: 16px 44px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pfaq-item:nth-child(2n) { border-right: none; }
+  .pfaq-item:nth-last-child(-n+2) { border-bottom: none; }
+
+  .faq-q {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+    display: flex;
+    gap: 8px;
+    align-items: baseline;
+  }
+
+  .faq-q::before {
+    content: 'Q';
+    font-family: var(--serif);
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .faq-a { font-size: 11px; color: var(--muted); line-height: 1.65; }
+
+  /* ── FOOTER ── */
+  .pfooter {
+    background: #0F1729;
+    padding: 15px 56px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .pfooter-l { font-size: 11px; color: #3A4A60; }
+  .pfooter-l strong { color: var(--accent); }
+  .pfooter-r { font-size: 11px; color: #2A3648; }
+</style>
+</head>
+<body>
+
+<div class="poster">
+
+  <!-- ── HEADER ── -->
+  <div class="ph">
+    <div>
+      <div class="ph-eyebrow">面向非开发人员 · 零基础友好</div>
+      <div class="ph-title">Claude Code <em>安装指南</em><span class="ph-badge">WINDOWS</span></div>
+      <div class="ph-desc">装在你电脑上的 AI 助理，能直接读写你的文件——不需要来回复制粘贴，打一句话，活就干完了。</div>
+    </div>
+    <div class="ph-steps">
+      <div class="ph-step">
+        <div class="ph-step-num">1</div>
+        <div class="ph-step-label">了解<br>它是什么</div>
+      </div>
+      <div class="ph-step">
+        <div class="ph-step-num">2</div>
+        <div class="ph-step-label">运行<br>安装脚本</div>
+      </div>
+      <div class="ph-step">
+        <div class="ph-step-num">3</div>
+        <div class="ph-step-label">了解<br>授权机制</div>
+      </div>
+      <div class="ph-step">
+        <div class="ph-step-num">4</div>
+        <div class="ph-step-label">练手<br>示例任务</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ARCH DIAGRAM ── -->
+  <div class="arch">
+    <div class="arch-zone arch-zone-local">
+      <div class="arch-tag">你的电脑 · PowerShell</div>
+      <div class="arch-name">Claude Code</div>
+      <div class="arch-sub">本地 Agent · 非模型本身</div>
+      <div class="arch-roles">
+        <div class="arch-role">接收你输入的指令</div>
+        <div class="arch-role">读写本地文件</div>
+        <div class="arch-role">在窗口里展示结果</div>
+      </div>
+    </div>
+
+    <div class="arch-mid">
+      <div class="arch-key">API Key</div>
+      <div class="arch-arrow">&larr; &rarr;<br><span style="font-size:9px;color:#A89880;">双向通信</span></div>
+    </div>
+
+    <div class="arch-zone arch-zone-remote">
+      <div class="arch-tag">远端服务器</div>
+      <div class="arch-name">大语言模型</div>
+      <div class="arch-sub">真正的大脑</div>
+      <div class="arch-roles">
+        <div class="arch-role">理解你的意图</div>
+        <div class="arch-role">决定做什么</div>
+        <div class="arch-role">把操作指令发回来</div>
+      </div>
+      <div class="arch-note">通过 API 可接入任何模型：Claude · GPT-4o · Gemini&hellip;</div>
+    </div>
+  </div>
+
+  <!-- ── MAIN: 2 columns ── -->
+  <div class="pmain">
+
+    <!-- LEFT: 安装 + 授权 -->
+    <div class="pcol">
+      <div class="psec">
+        <div class="psec-hd">
+          <span class="psec-num">&sect; 03</span>
+          <span class="psec-title">安装与启动</span>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-n">&#9312;</div>
+            <div>
+              <div class="step-action">用记事本打开 <code>02 双击打开安装.bat</code>，填入你的 API Key</div>
+              <div class="step-detail">右键文件 &rarr; 选「编辑」或「用记事本打开」，找到第 23 行的占位符，替换为你的 MiniMax API Key，保存后关闭。</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">&#9313;</div>
+            <div>
+              <div class="step-action">双击 <code>02 双击打开安装.bat</code> 运行安装</div>
+              <div class="step-detail">如果弹出蓝色「Windows 保护了你的电脑」，点「更多信息」&rarr;「仍要运行」。弹出权限确认窗口点「是」。</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">&#9314;</div>
+            <div>
+              <div class="step-action">脚本自动安装 Git &middot; Node.js &middot; Claude Code</div>
+              <div class="step-detail">全程自动，无需任何操作。下载和安装过程约 3-10 分钟，取决于网速。API 配置自动写入。</div>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-n">&#9315;</div>
+            <div>
+              <div class="step-action">出现「安装成功」&rarr; 关闭窗口 &rarr; 打开 PowerShell &rarr; 输入 <code>claude</code> 回车</div>
+              <div class="step-detail">按 Win 键搜索「PowerShell」打开。或在桌面空白处右键 &rarr;「在终端中打开」（Windows 11）。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-hd">
+          <span class="psec-num">&sect; 04</span>
+          <span class="psec-title">操作授权说明</span>
+        </div>
+        <p class="auth-note">常用操作（读写文件、运行脚本等）已预置授权，无需每次手动同意。遇到未预置的操作会弹出询问：</p>
+        <table class="auth-table">
+          <thead>
+            <tr>
+              <th style="width:120px;">选项</th>
+              <th>含义</th>
+              <th>建议</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="badge badge-allow">Allow</span></td>
+              <td>允许这一次，下次还会再问</td>
+              <td class="dim">刚开始用时推荐，每次都看清楚它要做什么</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-always">Allow always</span></td>
+              <td>允许这次，以后不再询问</td>
+              <td class="dim">熟悉后，对信任的操作选这个</td>
+            </tr>
+            <tr>
+              <td><span class="badge badge-deny">Deny</span></td>
+              <td>拒绝这次操作</td>
+              <td class="dim">不确定时随时可以拒绝</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- RIGHT: 练手 + 指令 -->
+    <div class="pcol">
+      <div class="psec">
+        <div class="psec-hd">
+          <span class="psec-num">&sect; 05</span>
+          <span class="psec-title">练手任务（示例项目）</span>
+        </div>
+        <p class="term-intro">把 <code>03 示例项目</code> 文件夹拖入 PowerShell 窗口，路径自动出现，再依次输入以下提示词：</p>
+        <div class="term">
+          <div class="term-bar">
+            <div class="term-bar-icon">PS</div>
+            <span class="term-bar-title">Windows PowerShell</span>
+          </div>
+          <div class="term-body">
+            <div>
+              <div class="task-num">任务 01 · 摸清文件夹内容</div>
+              <div class="t-input">
+                <span class="t-chevron">&rsaquo;</span>
+                <span class="t-text">帮我看看这个文件夹里有什么，每个文件大概是什么内容，整理成一份简要说明。</span>
+              </div>
+              <div class="t-resp">
+                <div class="t-dot"></div>
+                <span class="t-resp-text">Claude 读取所有文件，输出每个文件的简要说明</span>
+              </div>
+            </div>
+            <hr class="t-sep">
+            <div>
+              <div class="task-num">任务 02 · 制作可视化分析网页</div>
+              <div class="t-input">
+                <span class="t-chevron">&rsaquo;</span>
+                <span class="t-text">其中有两个素材文件，帮我做一个好看的 HTML 网页，展示用户反馈的分类汇总、高频问题排名、以及需求和用户痛点的匹配分析。直接生成本地 HTML 文件，生成后帮我用浏览器打开。</span>
+              </div>
+              <div class="t-resp">
+                <div class="t-dot"></div>
+                <span class="t-resp-text">Claude 分析素材，生成 HTML 可视化文件，并在浏览器中打开</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="psec">
+        <div class="psec-hd">
+          <span class="psec-num">&sect; 06</span>
+          <span class="psec-title">常用指令</span>
+        </div>
+        <div class="cmds">
+          <div class="cmd">
+            <div class="cmd-code">/clear</div>
+            <div class="cmd-name">清空对话</div>
+            <div class="cmd-desc">话题切换、对话跑偏时，清掉全部重头开始</div>
+          </div>
+          <div class="cmd">
+            <div class="cmd-code">/resume</div>
+            <div class="cmd-name">继续上次对话</div>
+            <div class="cmd-desc">弹出历史列表，选一条接着上次继续</div>
+          </div>
+          <div class="cmd">
+            <div class="cmd-code">/compact</div>
+            <div class="cmd-name">压缩上下文</div>
+            <div class="cmd-desc">对话太长记性变差时，保留摘要压缩对话</div>
+          </div>
+          <div class="cmd">
+            <div class="cmd-code">/init</div>
+            <div class="cmd-name">创建项目规则</div>
+            <div class="cmd-desc">扫描文件夹自动生成 CLAUDE.md 项目指令</div>
+          </div>
+          <div class="cmd">
+            <div class="cmd-code">/memory</div>
+            <div class="cmd-name">查看长期记忆</div>
+            <div class="cmd-desc">跨会话记住的信息，可查看和管理</div>
+          </div>
+          <div class="cmd">
+            <div class="cmd-code">/help</div>
+            <div class="cmd-name">查看所有指令</div>
+            <div class="cmd-desc">当前版本全部可用指令的完整列表</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CONFIG STRIP ── -->
+  <div class="pconfig">
+    <div class="pcc">
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:4px;">
+        <span class="psec-num">&sect; 07</span>
+        <span style="font-family:var(--serif);font-size:17px;font-weight:700;color:var(--text);">如何配置</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted);line-height:1.65;margin-bottom:4px;">没有图形设置界面，通过文件实现配置。<code>.claude</code> 文件夹默认隐藏，在文件资源管理器 &rarr; 查看 &rarr; 勾选「隐藏的项目」可显示。</div>
+      <div class="pcc-tree">
+        <div class="pcc-root">C:\Users\你的用户名\.claude\</div>
+        <div style="padding-left:10px;">&boxvr;&boxh; CLAUDE.md &nbsp;<span class="pcc-comment">&larr; 全局指令</span></div>
+        <div style="padding-left:10px;">&boxvr;&boxh; settings.json <span class="pcc-comment">&larr; 技术设置</span></div>
+        <div style="padding-left:10px;">&boxur;&boxh; memory\ &nbsp;&nbsp;&nbsp;&nbsp;<span class="pcc-comment">&larr; 长期记忆</span></div>
+      </div>
+    </div>
+    <div class="pcc">
+      <div class="pcc-path">~\.claude\CLAUDE.md</div>
+      <div class="pcc-title">全局指令 · 最重要</div>
+      <div class="pcc-desc">对你打开的所有项目都生效。适合放普适规则，如：所有回答用中文、解释技术内容用通俗语言、修改文件前先列出改动计划。安装脚本已预置一份。</div>
+    </div>
+    <div class="pcc">
+      <div class="pcc-path">工作文件夹\CLAUDE.md</div>
+      <div class="pcc-title">项目指令 · 按需设置</div>
+      <div class="pcc-desc">只对当前文件夹生效。适合放项目专属背景，如：这个文件夹是整理用户反馈的、不要动「已归档」目录。Claude 会同时读取全局指令和项目指令。</div>
+    </div>
+    <div class="pcc">
+      <div class="pcc-path" style="margin-bottom:6px;">如何修改全局指令</div>
+      <div class="pcc-desc">启动 Claude Code 后直接说：<br><br>「帮我打开全局配置文件，我想加几条指令」<br><br>它会直接帮你写进去，不需要手动找文件。</div>
+    </div>
+  </div>
+
+  <!-- ── FAQ ── -->
+  <div class="pfaq-hd">
+    <span class="psec-num">&sect; 08</span>
+    <span style="font-family:var(--serif);font-size:17px;font-weight:700;color:var(--text);">遇到问题？</span>
+  </div>
+  <div class="pfaq">
+    <div class="pfaq-item">
+      <div class="faq-q">弹出蓝色「Windows 保护了你的电脑」</div>
+      <div class="faq-a">点「更多信息」&rarr;「仍要运行」。这是 Windows SmartScreen 对未签名脚本的正常安全提示。</div>
+    </div>
+    <div class="pfaq-item">
+      <div class="faq-q">弹出「用户账户控制」确认窗口</div>
+      <div class="faq-a">点「是」。安装 Git 和 Node.js 需要管理员权限，这是 Windows 正常的安全确认流程。</div>
+    </div>
+    <div class="pfaq-item">
+      <div class="faq-q">安装中途卡住不动了</div>
+      <div class="faq-a">等待 5 分钟无反应，关闭窗口后重新双击运行安装脚本，已完成的步骤会自动跳过。</div>
+    </div>
+    <div class="pfaq-item">
+      <div class="faq-q">输入 claude 后提示「不是内部或外部命令」</div>
+      <div class="faq-a">确认已关闭旧窗口，重新打开新的 PowerShell 再试。如果仍不行，重启电脑后再试。</div>
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="pfooter">
+    <div class="pfooter-l">Claude Code 安装指南 · <strong>Windows 版 · 面向非开发人员</strong></div>
+    <div class="pfooter-r">安装问题请联系文件来源</div>
+  </div>
+
+</div>
+</body>
+</html>

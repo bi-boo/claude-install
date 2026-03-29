@@ -1,0 +1,1963 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code 安装指南 · Windows</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #F4F7FB;
+      --bg-warm: #E8EDF5;
+      --bg-code: #DEE5EF;
+      --text: #141821;
+      --muted: #5E6A7E;
+      --border: #C5CEDB;
+      --accent: #2563EB;
+      --accent-lt: #EBF2FF;
+      --accent-dk: #1A4FC4;
+      --num-ghost: #D0DAE8;
+      --step-line: #B8C5D5;
+      --serif: 'Noto Serif SC', 'STSong', 'Songti SC', Georgia, serif;
+      --sans: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+      --mono: 'JetBrains Mono', 'SF Mono', 'Courier New', monospace;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.75;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* -- 导航栏 -- */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(244, 247, 251, 0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 clamp(24px, 6vw, 80px);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    nav ul::-webkit-scrollbar {
+      display: none;
+    }
+
+    nav ul li a {
+      display: block;
+      padding: 14px 18px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+
+    nav ul li a:hover {
+      color: var(--accent);
+    }
+
+    nav ul li a.active {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    /* -- 页面容器 -- */
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 clamp(24px, 5vw, 60px);
+    }
+
+    /* -- Hero -- */
+    .hero {
+      padding: clamp(60px, 10vw, 120px) 0 clamp(48px, 8vw, 80px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(40px, 7vw, 72px);
+      font-weight: 700;
+      line-height: 1.12;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: clamp(12px, 1.5vw, 15px);
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      padding: 4px 16px;
+      margin-left: 12px;
+      vertical-align: middle;
+      position: relative;
+      top: -4px;
+    }
+
+    .hero-desc {
+      font-size: clamp(15px, 2vw, 17px);
+      color: var(--muted);
+      max-width: 780px;
+      line-height: 1.8;
+      margin-bottom: 36px;
+    }
+
+    .hero-path {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .hero-path-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .hero-path-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .hero-path-arrow {
+      font-size: 12px;
+      color: var(--border);
+      margin: 0 2px;
+    }
+
+    /* -- 通用段落结构 -- */
+    section {
+      padding: clamp(56px, 8vw, 96px) 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-child {
+      border-bottom: none;
+    }
+
+    .section-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(24px, 4vw, 36px);
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: clamp(32px, 5vw, 56px);
+      color: var(--text);
+    }
+
+    /* -- 架构图（Section 01） -- */
+    .arch-diagram {
+      display: grid;
+      grid-template-columns: 1fr 150px 1fr;
+      border: 1px solid var(--border);
+      margin-top: 8px;
+      align-items: stretch;
+    }
+
+    .arch-zone {
+      padding: 28px 24px;
+    }
+
+    .arch-zone-local {
+      border-right: 1px solid var(--border);
+    }
+
+    .arch-zone-remote {
+      border-left: 1px solid var(--border);
+    }
+
+    .arch-zone-tag {
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .arch-box {
+      border: 1px solid var(--border);
+      padding: 18px 20px;
+    }
+
+    .arch-box-local {
+      border-left: 3px solid var(--accent);
+    }
+
+    .arch-box-remote {
+      border-left: 3px solid var(--muted);
+    }
+
+    .arch-box-name {
+      font-family: var(--serif);
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .arch-box-badge {
+      font-size: 11px;
+      color: var(--muted);
+      font-style: italic;
+      margin-bottom: 14px;
+    }
+
+    .arch-box-roles {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .arch-box-role {
+      font-size: 13px;
+      color: var(--text);
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .arch-box-role::before {
+      content: "--";
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .arch-conn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 24px 12px;
+      background: var(--bg-warm);
+    }
+
+    .arch-conn-label {
+      font-size: 10px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.5;
+    }
+
+    .arch-conn-key {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      background: var(--bg);
+      border: 1px solid var(--accent);
+      padding: 5px 10px;
+      letter-spacing: 0.04em;
+      text-align: center;
+    }
+
+    .arch-conn-arrow {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .arch-footnotes {
+      border: 1px solid var(--border);
+      border-top: none;
+      padding: 18px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .arch-footnote {
+      display: grid;
+      grid-template-columns: 90px 1fr;
+      gap: 16px;
+      font-size: 13.5px;
+      align-items: baseline;
+    }
+
+    .arch-footnote-key {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--accent);
+    }
+
+    .arch-footnote-val {
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .arch-terminal-frame {
+      border: 1px dashed var(--border);
+      padding: 16px 14px 14px;
+      position: relative;
+      margin-top: 8px;
+    }
+
+    .arch-terminal-label {
+      position: absolute;
+      top: -9px;
+      left: 10px;
+      background: var(--bg);
+      padding: 0 6px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+    }
+
+    .arch-model-note {
+      margin-top: 12px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      padding: 8px 10px;
+      background: var(--bg-warm);
+      border-left: 2px solid var(--border);
+    }
+
+    /* -- 工作原理流程 -- */
+    .flow-diagram {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      overflow-x: auto;
+      margin-top: 8px;
+    }
+
+    .flow-step {
+      flex: 1;
+      min-width: 130px;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .flow-step-inner {
+      flex: 1;
+      padding: 24px 20px 20px;
+      border: 1px solid var(--border);
+      border-right: none;
+      background: var(--bg);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .flow-step:last-child .flow-step-inner {
+      border-right: 1px solid var(--border);
+    }
+
+    .flow-step-num {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    .flow-step-icon {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .flow-step-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .flow-step-sub {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .flow-arrow {
+      display: flex;
+      align-items: center;
+      padding: 0 4px;
+      margin-top: 40px;
+      z-index: 1;
+    }
+
+    .flow-arrow::after {
+      content: '\203A';
+      font-size: 24px;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    /* -- 安装步骤 -- */
+    .install-phase {
+      position: relative;
+      padding-left: 80px;
+      margin-bottom: clamp(40px, 6vw, 64px);
+    }
+
+    .install-phase:last-child {
+      margin-bottom: 0;
+    }
+
+    .install-phase-num {
+      position: absolute;
+      left: 0;
+      top: -8px;
+      font-family: var(--serif);
+      font-size: 72px;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--num-ghost);
+      user-select: none;
+      pointer-events: none;
+    }
+
+    .install-phase-title {
+      font-family: var(--serif);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .install-phase-note {
+      font-size: 13px;
+      color: var(--accent);
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .install-steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--border);
+    }
+
+    .install-step {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .install-step:last-child {
+      border-bottom: none;
+    }
+
+    .install-step-idx {
+      flex-shrink: 0;
+      width: 44px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 16px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      border-right: 1px solid var(--border);
+      background: var(--bg-warm);
+    }
+
+    .install-step-content {
+      flex: 1;
+      padding: 14px 18px;
+    }
+
+    .install-step-action {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .install-step-detail {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .install-step-badge {
+      display: inline-block;
+      margin-top: 8px;
+      padding: 3px 10px;
+      background: var(--accent-lt);
+      border: 1px solid var(--accent);
+      color: var(--accent-dk);
+      font-size: 12px;
+      font-weight: 500;
+      border-radius: 2px;
+    }
+
+    .install-substeps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      margin-top: 6px;
+    }
+
+    .install-substep {
+      font-size: 13px;
+      color: var(--muted);
+      padding-left: 16px;
+      position: relative;
+      line-height: 1.65;
+    }
+
+    .install-substep::before {
+      content: '\00B7';
+      position: absolute;
+      left: 4px;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .tip-box {
+      margin-top: 16px;
+      padding: 14px 16px;
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+    }
+
+    .tip-box-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .tip-box-text {
+      font-size: 13px;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* -- 操作授权 -- */
+    .auth-table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid var(--border);
+      font-size: 14px;
+    }
+
+    .auth-table th {
+      text-align: left;
+      padding: 12px 20px;
+      background: var(--bg-warm);
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .auth-table td {
+      padding: 14px 20px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.65;
+    }
+
+    .auth-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .auth-name {
+      font-family: var(--mono);
+      font-weight: 500;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .allow {
+      color: #2E7D32;
+    }
+
+    .allow-always {
+      color: var(--accent);
+    }
+
+    .deny {
+      color: #C62828;
+    }
+
+    /* -- 常用指令 -- */
+    .commands-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--border);
+    }
+
+    .command-item {
+      padding: 22px 22px;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .command-item:nth-child(3n):not(.command-item-full) {
+      border-right: none;
+    }
+
+    .command-item:nth-child(6) {
+      border-bottom: none;
+    }
+
+    .command-item-full {
+      grid-column: 1 / -1;
+      border-right: none;
+      border-bottom: none;
+      background: var(--bg-warm);
+      display: flex;
+      align-items: baseline;
+      gap: 24px;
+    }
+
+    .command-item-full .command-group-label {
+      flex-shrink: 0;
+      margin-bottom: 0;
+    }
+
+    .command-item-full .command-code {
+      margin-bottom: 0;
+    }
+
+    .command-item-full .command-name {
+      margin-bottom: 0;
+    }
+
+    .command-group-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 8px;
+      opacity: 0.7;
+    }
+
+    @media (max-width: 600px) {
+      .commands-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .command-item:nth-child(3n) {
+        border-right: 1px solid var(--border);
+      }
+
+      .command-item:nth-child(2n) {
+        border-right: none;
+      }
+
+      .command-item:nth-child(7),
+      .command-item:nth-child(8),
+      .command-item:nth-child(9) {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .command-item:nth-child(9) {
+        border-bottom: none;
+      }
+
+      .command-item:nth-child(8) {
+        border-bottom: none;
+      }
+    }
+
+    .command-code {
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 10px;
+      letter-spacing: 0.03em;
+    }
+
+    .command-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .command-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* -- 配置体系 -- */
+    .config-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    @media (max-width: 640px) {
+      .config-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .file-tree {
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 2;
+      padding: 24px;
+      background: var(--bg-warm);
+      border: 1px solid var(--border);
+    }
+
+    .file-tree-root {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .file-tree-dir {
+      color: var(--muted);
+    }
+
+    .file-tree-file {
+      color: var(--text);
+    }
+
+    .file-tree-comment {
+      color: var(--accent);
+    }
+
+    .config-table {
+      width: 100%;
+      border: 1px solid var(--border);
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: max-content 1fr;
+    }
+
+    .config-row {
+      display: contents;
+    }
+
+    .config-row-key {
+      padding: 18px 20px;
+      background: var(--bg-warm);
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      white-space: nowrap;
+      font-size: 12px;
+      color: var(--accent);
+      line-height: 1.6;
+      display: flex;
+      align-items: center;
+    }
+
+    .config-row-val {
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .config-row:last-child .config-row-key,
+    .config-row:last-child .config-row-val {
+      border-bottom: none;
+    }
+
+    .config-row-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .config-row-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    @media (max-width: 560px) {
+      .config-table {
+        grid-template-columns: 1fr;
+      }
+
+      .config-row-key {
+        border-right: none;
+      }
+
+      .config-row-val {
+        border-top: none;
+      }
+    }
+
+    .kbd-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .kbd {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-bottom: 2px solid var(--border);
+      border-radius: 4px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .kbd-plus {
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 300;
+    }
+
+    .kbd-desc {
+      font-size: 12px;
+      color: var(--muted);
+      margin-left: 4px;
+    }
+
+    .config-item {
+      padding: 16px 18px;
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+    }
+
+    .config-item-file {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .config-item-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .config-item-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    /* -- 练手任务（PowerShell 模拟） -- */
+    .terminal-window {
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid #1B3A5C;
+      margin-top: 8px;
+    }
+
+    .terminal-titlebar {
+      background: #012456;
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #1B3A5C;
+    }
+
+    .terminal-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .terminal-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .terminal-dots span:nth-child(1) {
+      background: #FF5F56;
+    }
+
+    .terminal-dots span:nth-child(2) {
+      background: #FFBD2E;
+    }
+
+    .terminal-dots span:nth-child(3) {
+      background: #27C93F;
+    }
+
+    .terminal-wintitle {
+      flex: 1;
+      text-align: center;
+      font-size: 12px;
+      color: #6C8EAF;
+      font-family: var(--sans);
+    }
+
+    .terminal-body {
+      background: #012456;
+      padding: 24px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* -- Claude Code 启动界面 -- */
+    .term-startup {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #1B3A5C;
+      margin-bottom: 22px;
+    }
+
+    .term-mascot {
+      flex-shrink: 0;
+      image-rendering: pixelated;
+    }
+
+    .term-cc-line {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 5px;
+    }
+
+    .term-cc-name {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 700;
+      color: #D0D8E4;
+      letter-spacing: 0.03em;
+    }
+
+    .term-cc-ver {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: #3E5E80;
+    }
+
+    .term-cc-cwd {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: #5A7A9E;
+    }
+
+    .term-setup-line {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: #4A6A8E;
+      padding-bottom: 20px;
+      border-bottom: 1px dashed #1B3A5C;
+      margin-bottom: 24px;
+    }
+
+    .term-exchange {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-bottom: 24px;
+      margin-bottom: 24px;
+      border-bottom: 1px dashed #1B3A5C;
+    }
+
+    .term-exchange:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .term-exchange-num {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      margin-bottom: 2px;
+    }
+
+    .term-user-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .term-chevron {
+      color: var(--accent);
+      font-family: var(--mono);
+      font-size: 15px;
+      line-height: 1.55;
+      flex-shrink: 0;
+    }
+
+    .term-user-text {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: #D0D8E4;
+      line-height: 1.7;
+    }
+
+    .term-claude-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding-left: 22px;
+    }
+
+    .term-claude-dot {
+      color: #5A8A5A;
+      font-size: 8px;
+      flex-shrink: 0;
+      margin-top: 5px;
+      line-height: 1;
+    }
+
+    .term-claude-text {
+      font-family: var(--sans);
+      font-size: 12px;
+      color: #4E8850;
+      line-height: 1.65;
+      font-style: italic;
+    }
+
+    .terminal-body .copy-btn {
+      color: #5A7A9E;
+    }
+
+    .terminal-body .copy-btn:hover {
+      color: #60A0E0;
+    }
+
+    .terminal-body .copy-btn.copied {
+      color: #5A8A5A;
+    }
+
+    /* -- 复制按钮 -- */
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      color: var(--muted);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: color 0.15s;
+      line-height: 0;
+      user-select: none;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    .copy-btn:hover {
+      color: var(--accent);
+    }
+
+    .copy-btn.copied {
+      color: #5a7a5a;
+    }
+
+    .task-prompt-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .task-prompt-header .task-prompt-label {
+      margin-bottom: 0;
+    }
+
+    /* -- 问题排查 -- */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--border);
+    }
+
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1.4fr;
+      gap: 0;
+    }
+
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    @media (max-width: 600px) {
+      .faq-item {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .faq-q {
+      padding: 20px 24px;
+      background: var(--bg-warm);
+      border-right: 1px solid var(--border);
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .faq-q::before {
+      content: 'Q';
+      display: inline-block;
+      margin-right: 10px;
+      font-family: var(--serif);
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .faq-a {
+      padding: 20px 24px;
+      font-size: 14px;
+      color: var(--muted);
+      line-height: 1.7;
+    }
+
+    .faq-a-steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-top: 6px;
+    }
+
+    .faq-a-step {
+      font-size: 13px;
+      color: var(--text);
+      padding-left: 18px;
+      position: relative;
+      line-height: 1.6;
+    }
+
+    .faq-a-step::before {
+      content: attr(data-n);
+      position: absolute;
+      left: 0;
+      font-weight: 600;
+      color: var(--accent);
+      font-size: 12px;
+    }
+
+    /* -- 总结 footer -- */
+    .summary {
+      padding: clamp(48px, 8vw, 80px) 0;
+    }
+
+    .summary-quote {
+      font-family: var(--serif);
+      font-size: clamp(17px, 2.5vw, 22px);
+      font-weight: 600;
+      line-height: 1.65;
+      color: var(--text);
+      padding: 32px 36px;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      position: relative;
+    }
+
+    .summary-quote em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .summary-footer {
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* -- 响应式 -- */
+    @media (max-width: 480px) {
+      .install-phase {
+        padding-left: 52px;
+      }
+
+      .install-phase-num {
+        font-size: 52px;
+      }
+
+      .flow-diagram {
+        flex-direction: column;
+      }
+
+      .flow-step .flow-step-inner {
+        border-right: 1px solid var(--border);
+        border-bottom: none;
+      }
+
+      .flow-step:last-child .flow-step-inner {
+        border-bottom: 1px solid var(--border);
+      }
+
+      .flow-arrow {
+        display: none;
+      }
+
+      .arch-diagram {
+        grid-template-columns: 1fr;
+      }
+
+      .arch-zone-local {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .arch-zone-remote {
+        border-left: none;
+        border-top: 1px solid var(--border);
+      }
+
+      .arch-conn {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 16px;
+        border-top: 1px solid var(--border);
+        border-bottom: 1px solid var(--border);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- 导航 -->
+  <nav>
+    <ul>
+      <li><a href="#what">它是什么</a></li>
+      <li><a href="#install">安装步骤</a></li>
+      <li><a href="#auth">操作授权</a></li>
+      <li><a href="#tasks">练手任务</a></li>
+      <li><a href="#commands">常用指令</a></li>
+      <li><a href="#config">如何配置</a></li>
+      <li><a href="#faq">常见问题</a></li>
+    </ul>
+  </nav>
+
+  <div class="page">
+
+    <!-- Hero -->
+    <div class="hero">
+      <div class="hero-eyebrow">面向非开发人员 · 零基础友好</div>
+      <h1>Claude Code<span class="hero-badge">WINDOWS</span><br><span>安装指南</span></h1>
+      <p class="hero-desc">一个装在你电脑上的 AI 助理，能直接读写你的文件——不需要来回复制粘贴，打一句话，活就干完了。</p>
+      <div class="hero-path">
+        <div class="hero-path-item">
+          <div class="hero-path-num">1</div>
+          <span>了解它是什么</span>
+        </div>
+        <span class="hero-path-arrow">&rarr;</span>
+        <div class="hero-path-item">
+          <div class="hero-path-num">2</div>
+          <span>运行安装脚本</span>
+        </div>
+        <span class="hero-path-arrow">&rarr;</span>
+        <div class="hero-path-item">
+          <div class="hero-path-num">3</div>
+          <span>了解授权机制</span>
+        </div>
+        <span class="hero-path-arrow">&rarr;</span>
+        <div class="hero-path-item">
+          <div class="hero-path-num">4</div>
+          <span>练手示例任务</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 第一节：它是什么 -->
+    <section id="what">
+      <div class="section-label">Section 01</div>
+      <div class="section-title">Claude Code 是什么？</div>
+
+      <div class="arch-diagram">
+        <div class="arch-zone arch-zone-local">
+          <div class="arch-zone-tag">你的电脑</div>
+          <div class="arch-terminal-frame">
+            <div class="arch-terminal-label">PowerShell</div>
+            <div class="arch-box arch-box-local">
+              <div class="arch-box-name">Claude Code</div>
+              <div class="arch-box-badge">本地 Agent · 非模型本身</div>
+              <div class="arch-box-roles">
+                <div class="arch-box-role">接收你输入的指令</div>
+                <div class="arch-box-role">读写本地文件</div>
+                <div class="arch-box-role">在 PowerShell 里展示结果</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="arch-conn">
+          <div class="arch-conn-label">发送<br>指令 + 文件内容</div>
+          <div class="arch-conn-arrow">&rarr;</div>
+          <div class="arch-conn-key">API Key</div>
+          <div class="arch-conn-arrow">&larr;</div>
+          <div class="arch-conn-label">返回<br>分析结果 + 操作指令</div>
+        </div>
+
+        <div class="arch-zone arch-zone-remote">
+          <div class="arch-zone-tag">远端服务器</div>
+          <div class="arch-box arch-box-remote">
+            <div class="arch-box-name">大语言模型</div>
+            <div class="arch-box-badge">真正的大脑</div>
+            <div class="arch-box-roles">
+              <div class="arch-box-role">理解你的意图</div>
+              <div class="arch-box-role">决定做什么</div>
+              <div class="arch-box-role">把操作指令发回来</div>
+            </div>
+          </div>
+          <div class="arch-model-note">通过 API 可接入任何模型：Claude · GPT-4o · Gemini...</div>
+        </div>
+      </div>
+
+      <div class="arch-footnotes">
+        <div class="arch-footnote">
+          <span class="arch-footnote-key">PowerShell</span>
+          <span class="arch-footnote-val">Windows 自带的命令行程序，按 Win 键搜索「PowerShell」即可打开。用文字指令代替鼠标点击，可以直接操作文件系统。</span>
+        </div>
+        <div class="arch-footnote">
+          <span class="arch-footnote-key">API Key</span>
+          <span class="arch-footnote-val">连接本地程序与远端 AI 的通行证。需要在安装脚本中填写一次，之后自动生效。</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 第二节：工作原理 -->
+    <section>
+      <div class="section-label">Section 02</div>
+      <div class="section-title">工作原理：一句话到结果</div>
+      <div class="flow-diagram">
+        <div class="flow-step">
+          <div class="flow-step-inner">
+            <div class="flow-step-num">01</div>
+            <div class="flow-step-icon">&#x1F4AC;</div>
+            <div class="flow-step-label">你输入一句话</div>
+            <div class="flow-step-sub">用自然语言，不需要特殊语法</div>
+          </div>
+        </div>
+        <div class="flow-arrow"></div>
+        <div class="flow-step">
+          <div class="flow-step-inner">
+            <div class="flow-step-num">02</div>
+            <div class="flow-step-icon">&#x1F4E6;</div>
+            <div class="flow-step-label">打包发出</div>
+            <div class="flow-step-sub">把你的话 + 文件夹内容一起发给远程 AI</div>
+          </div>
+        </div>
+        <div class="flow-arrow"></div>
+        <div class="flow-step">
+          <div class="flow-step-inner">
+            <div class="flow-step-num">03</div>
+            <div class="flow-step-icon">&#x1F9E0;</div>
+            <div class="flow-step-label">AI 想好怎么做</div>
+            <div class="flow-step-sub">决定读哪个文件、改哪里、创建什么</div>
+          </div>
+        </div>
+        <div class="flow-arrow"></div>
+        <div class="flow-step">
+          <div class="flow-step-inner">
+            <div class="flow-step-num">04</div>
+            <div class="flow-step-icon">&#x2699;&#xFE0F;</div>
+            <div class="flow-step-label">本地自动执行</div>
+            <div class="flow-step-sub">Claude Code 在你电脑上实际操作文件</div>
+          </div>
+        </div>
+        <div class="flow-arrow"></div>
+        <div class="flow-step">
+          <div class="flow-step-inner">
+            <div class="flow-step-num">05</div>
+            <div class="flow-step-icon">&#x2705;</div>
+            <div class="flow-step-label">结果展示给你</div>
+            <div class="flow-step-sub">全程你只需要说话，中间操作全自动</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 第三节：安装步骤 -->
+    <section id="install">
+      <div class="section-label">Section 03</div>
+      <div class="section-title">安装与启动</div>
+
+      <!-- Step 1 -->
+      <div class="install-phase">
+        <div class="install-phase-num">1</div>
+        <div class="install-phase-title">填写 API Key</div>
+        <div class="install-phase-note">安装前的唯一准备工作</div>
+        <ol class="install-steps">
+          <li class="install-step">
+            <div class="install-step-idx">&oplus;</div>
+            <div class="install-step-content">
+              <div class="install-step-action">右键点击 <code
+                  style="font-family:var(--mono);font-size:12px;background:var(--bg-code);padding:2px 6px;">02 双击打开安装.bat</code>
+                &rarr; 选「用记事本打开」或「编辑」</div>
+              <div class="install-step-detail">找到第 23 行，把你的 API Key 粘贴到引号之间，保存后关闭记事本。</div>
+              <span class="install-step-badge">只需做一次，之后不用再改</span>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="install-phase">
+        <div class="install-phase-num">2</div>
+        <div class="install-phase-title">运行安装脚本</div>
+        <div class="install-phase-note">耗时约 3-10 分钟，全程自动</div>
+        <ol class="install-steps">
+          <li class="install-step">
+            <div class="install-step-idx">&oplus;</div>
+            <div class="install-step-content">
+              <div class="install-step-action">双击运行 <code
+                  style="font-family:var(--mono);font-size:12px;background:var(--bg-code);padding:2px 6px;">02 双击打开安装.bat</code></div>
+              <div class="install-step-detail">Windows 可能弹出两个安全提示，按顺序处理即可：</div>
+              <ul class="install-substeps">
+                <li class="install-substep"><strong>蓝色 SmartScreen 弹窗</strong>：点「更多信息」&rarr; 点「仍要运行」</li>
+                <li class="install-substep"><strong>用户账户控制（UAC）弹窗</strong>：点「是」</li>
+              </ul>
+              <span class="install-step-badge">这两个弹窗只在首次运行时出现</span>
+            </div>
+          </li>
+          <li class="install-step">
+            <div class="install-step-idx">&oplus;</div>
+            <div class="install-step-content">
+              <div class="install-step-action">脚本自动完成以下步骤，全程无需操作</div>
+              <ul class="install-substeps">
+                <li class="install-substep">安装 Git</li>
+                <li class="install-substep">安装 Node.js</li>
+                <li class="install-substep">安装 Claude Code</li>
+                <li class="install-substep">写入 API 配置</li>
+              </ul>
+            </div>
+          </li>
+          <li class="install-step">
+            <div class="install-step-idx">&oplus;</div>
+            <div class="install-step-content">
+              <div class="install-step-action">出现「安装成功」提示即完成</div>
+              <div class="install-step-detail">看到成功提示后，关闭这个窗口，继续下一步。</div>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="install-phase">
+        <div class="install-phase-num">3</div>
+        <div class="install-phase-title">开始使用</div>
+        <div class="install-phase-note">安装完成后，按以下顺序操作</div>
+        <ol class="install-steps">
+          <li class="install-step">
+            <div class="install-step-idx">&oplus;</div>
+            <div class="install-step-content">
+              <div class="install-step-action">关闭安装脚本窗口</div>
+              <div class="install-step-detail">安装脚本运行的窗口要关掉，必须开新的 PowerShell 才能让配置生效。</div>
+            </div>
+          </li>
+          <li class="install-step">
+            <div class="install-step-idx">&oplus;</div>
+            <div class="install-step-content">
+              <div class="install-step-action">按 <kbd style="font-family:var(--mono);font-size:12px;background:var(--bg-code);padding:2px 6px;border:1px solid var(--border);border-radius:3px;">Win</kbd> 键，搜索「PowerShell」并打开</div>
+              <div class="install-step-detail">在开始菜单搜索栏里输入 PowerShell，点击「Windows PowerShell」打开。</div>
+            </div>
+          </li>
+          <li class="install-step">
+            <div class="install-step-idx">&oplus;</div>
+            <div class="install-step-content">
+              <div class="install-step-action">输入 <code
+                  style="font-family:var(--mono);font-size:13px;background:var(--bg-code);padding:2px 8px;">claude</code><button
+                  class="copy-btn" data-copy="claude" onclick="copyData(this)" title="复制"><svg width="13" height="13"
+                    viewBox="0 0 13 13" fill="none" aria-hidden="true">
+                    <rect x="4.5" y="4.5" width="7.5" height="7.5" rx="0.5" stroke="currentColor" stroke-width="1.2" />
+                    <path d="M1 8.5V1H8.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+                  </svg></button> 按回车启动</div>
+            </div>
+          </li>
+        </ol>
+
+      </div>
+    </section>
+
+    <!-- 第四节：操作授权 -->
+    <section id="auth">
+      <div class="section-label">Section 04</div>
+      <div class="section-title">操作授权说明</div>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:16px;line-height:1.75;">安装脚本已经为你预置了一批常用操作的授权——比如读写文件、运行
+        Python/Node 脚本、管理文件等，这些你<strong style="color:var(--text);">不需要每次手动同意</strong>。但仍有一些不常见的操作没有预置，遇到时 Claude Code
+        会弹出询问，你会看到三个选项：</p>
+      <table class="auth-table">
+        <thead>
+          <tr>
+            <th>选项</th>
+            <th>含义</th>
+            <th>建议</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="auth-name allow">Allow</span></td>
+            <td>允许这一次操作，下次同类操作还会再问</td>
+            <td style="font-size:13px;color:var(--muted);">刚开始用时推荐选这个，每次都看看它要做什么</td>
+          </tr>
+          <tr>
+            <td><span class="auth-name allow-always">Allow always</span></td>
+            <td>允许这次，并且以后类似操作不再询问</td>
+            <td style="font-size:13px;color:var(--muted);">熟悉后，对信任的操作选这个，省掉重复确认</td>
+          </tr>
+          <tr>
+            <td><span class="auth-name deny">Deny</span></td>
+            <td>拒绝这次操作</td>
+            <td style="font-size:13px;color:var(--muted);">不确定某个操作时随时可以拒绝</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="tip-box" style="margin-top:20px;">
+        <div class="tip-box-label">关于工具安装</div>
+        <div class="tip-box-text">使用过程中 Claude Code 可能会自动安装一些执行代码所需的工具包（如处理 Excel 需要的 Python
+          库等），遇到这类请求选择「允许」即可，这是正常工作流程。</div>
+      </div>
+    </section>
+
+    <!-- 第五节：练手任务 -->
+    <section id="tasks">
+      <div class="section-label">Section 05</div>
+      <div class="section-title">练手任务（示例项目）</div>
+
+      <div class="terminal-window">
+        <div class="terminal-titlebar">
+          <div class="terminal-dots"><span></span><span></span><span></span></div>
+          <span class="terminal-wintitle">Windows PowerShell</span>
+        </div>
+        <div class="terminal-body">
+
+          <!-- Claude Code 启动界面 -->
+          <div class="term-startup">
+            <!-- 像素小人 -->
+            <svg class="term-mascot" width="56" height="66" viewBox="0 0 56 66" xmlns="http://www.w3.org/2000/svg"
+              shape-rendering="crispEdges">
+              <!-- 身体 -->
+              <rect x="0" y="0" width="56" height="48" fill="#2563EB" />
+              <!-- 左眼 -->
+              <rect x="12" y="14" width="10" height="10" fill="#012456" />
+              <!-- 右眼 -->
+              <rect x="34" y="14" width="10" height="10" fill="#012456" />
+              <!-- 4 条腿 -->
+              <rect x="2" y="48" width="11" height="18" fill="#2563EB" />
+              <rect x="15" y="48" width="11" height="18" fill="#2563EB" />
+              <rect x="30" y="48" width="11" height="18" fill="#2563EB" />
+              <rect x="43" y="48" width="11" height="18" fill="#2563EB" />
+            </svg>
+            <!-- 文字信息 -->
+            <div>
+              <div class="term-cc-line">
+                <span class="term-cc-name">Claude Code</span>
+                <span class="term-cc-ver">v2.1.84</span>
+              </div>
+              <div class="term-cc-cwd">C:\Users\你的用户名</div>
+            </div>
+          </div>
+
+          <div class="term-setup-line"># 先把「示例项目」文件夹拖入 PowerShell 窗口，文件路径会自动出现，再输入下面的提示词回车</div>
+
+          <div class="term-exchange">
+            <div class="term-exchange-num">任务 01 · 摸清文件夹内容</div>
+            <div class="term-user-row">
+              <span class="term-chevron">&rsaquo;</span>
+              <span class="term-user-text">帮我看看这个文件夹里有什么，每个文件大概是什么内容，整理成一份简要说明。</span>
+              <button class="copy-btn" data-copy="帮我看看这个文件夹里有什么，每个文件大概是什么内容，整理成一份简要说明。" onclick="copyData(this)"
+                title="复制"><svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+                  <rect x="4.5" y="4.5" width="7.5" height="7.5" rx="0.5" stroke="currentColor" stroke-width="1.2" />
+                  <path d="M1 8.5V1H8.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+                </svg></button>
+            </div>
+            <div class="term-claude-row">
+              <span class="term-claude-dot">&#x25CF;</span>
+              <span class="term-claude-text">Claude 读取所有文件，输出每个文件的简要说明</span>
+            </div>
+          </div>
+
+          <div class="term-exchange">
+            <div class="term-exchange-num">任务 02 · 制作可视化分析网页</div>
+            <div class="term-user-row">
+              <span class="term-chevron">&rsaquo;</span>
+              <span class="term-user-text">其中有两个素材文件，帮我做一个好看的 HTML 网页，展示用户反馈的分类汇总、高频问题排名、以及需求和用户痛点的匹配分析。直接生成本地 HTML
+                文件，生成后帮我用浏览器打开。</span>
+              <button class="copy-btn"
+                data-copy="其中有两个素材文件，帮我做一个好看的 HTML 网页，展示用户反馈的分类汇总、高频问题排名、以及需求和用户痛点的匹配分析。直接生成本地 HTML 文件，生成后帮我用浏览器打开。"
+                onclick="copyData(this)" title="复制"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"
+                  aria-hidden="true">
+                  <rect x="4.5" y="4.5" width="7.5" height="7.5" rx="0.5" stroke="currentColor" stroke-width="1.2" />
+                  <path d="M1 8.5V1H8.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" />
+                </svg></button>
+            </div>
+            <div class="term-claude-row">
+              <span class="term-claude-dot">&#x25CF;</span>
+              <span class="term-claude-text">Claude 分析素材，生成 HTML 可视化文件，并在浏览器中打开</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 第六节：常用指令 -->
+    <section id="commands">
+      <div class="section-label">Section 06</div>
+      <div class="section-title">常用指令</div>
+      <p style="font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.75;">进入对话后，直接在输入框里输入斜杠指令。按使用频率分三组：
+      </p>
+      <div class="commands-grid">
+
+        <!-- 第一组：每天都用 -->
+        <div class="command-item">
+          <div class="command-group-label">每天都用</div>
+          <div class="command-code">/clear</div>
+          <div class="command-name">清空对话重新开始</div>
+          <div class="command-desc">清掉当前全部对话内容，完全重头开始。话题切换、对话跑偏时用。</div>
+        </div>
+        <div class="command-item">
+          <div class="command-group-label">每天都用</div>
+          <div class="command-code">/resume</div>
+          <div class="command-name">继续上次对话</div>
+          <div class="command-desc">弹出历史对话列表，选一条接着上次继续。关掉 PowerShell 重开后找回之前进度用这个。</div>
+        </div>
+        <div class="command-item">
+          <div class="command-group-label">每天都用</div>
+          <div class="command-code">/compact</div>
+          <div class="command-name">压缩但保留上下文</div>
+          <div class="command-desc">对话太长 Claude 开始「记性变差」时用。和 /clear 的区别：会保留一份摘要，不会完全丢失背景。</div>
+        </div>
+
+        <!-- 第二组：项目配置 -->
+        <div class="command-item">
+          <div class="command-group-label">项目配置</div>
+          <div class="command-code">/init</div>
+          <div class="command-name">为项目创建指令文件</div>
+          <div class="command-desc">让 Claude 扫描当前文件夹并自动生成一份 CLAUDE.md，写清楚这个项目是什么、有什么规则。之后每次进这个文件夹都会自动读取。</div>
+        </div>
+        <div class="command-item">
+          <div class="command-group-label">项目配置</div>
+          <div class="command-code">/config</div>
+          <div class="command-name">打开设置面板</div>
+          <div class="command-desc">可视化配置界面，能查看和修改 AI 行为偏好，包括是否开启自动压缩、主题颜色等。</div>
+        </div>
+        <div class="command-item">
+          <div class="command-group-label">项目配置</div>
+          <div class="command-code">/memory</div>
+          <div class="command-name">查看长期记忆</div>
+          <div class="command-desc">Claude 跨会话记住的信息都在这里，比如你的职位、项目背景、偏好设置。可以在这里查看和管理。</div>
+        </div>
+
+        <!-- 第三组：进阶控制 -->
+        <div class="command-item command-item-full">
+          <div class="command-group-label">参考</div>
+          <div class="command-code">/help</div>
+          <div class="command-name">查看所有指令</div>
+          <div class="command-desc">显示当前版本全部可用指令的完整列表，遇到不熟悉的功能时随时查。</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 第七节：如何配置 -->
+    <section id="config">
+      <div class="section-label">Section 07</div>
+      <div class="section-title">如何配置</div>
+
+      <!-- 1. 简介 -->
+      <p style="font-size:14px;color:var(--muted);margin-bottom:28px;line-height:1.8;">Claude Code
+        没有图形界面的"设置"页面。所有配置都通过文件来实现——你在文件里写下规则和偏好，Claude 每次启动都会读取并遵守。</p>
+
+      <!-- 2. 文件目录在哪 -->
+      <div style="margin-bottom:28px;">
+        <div
+          style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">
+          配置文件存放在哪里</div>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:12px;line-height:1.8;">安装完成后，Claude Code
+          会在你的电脑上自动创建一个配置文件夹，路径是：</p>
+        <div
+          style="font-family:var(--mono);font-size:14px;background:var(--bg-code);padding:14px 20px;border:1px solid var(--border);">
+          C:\Users\<span style="color:var(--accent);font-weight:600;">你的用户名</span>\.claude\
+        </div>
+      </div>
+
+      <!-- 3. 默认隐藏 + 操作方式 -->
+      <div style="margin-bottom:28px;">
+        <div
+          style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">
+          这个文件夹是隐藏的</div>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:14px;line-height:1.8;">Windows 默认隐藏以点号开头的文件夹（如
+          .claude），在文件资源管理器里直接看不到。按以下步骤可以显示隐藏文件夹：</p>
+        <div style="font-size:14px;color:var(--text);line-height:2;padding:14px 20px;background:var(--bg-warm);border:1px solid var(--border);">
+          打开文件资源管理器 &rarr; 点击顶部「查看」选项卡 &rarr; 勾选「隐藏的项目」
+        </div>
+      </div>
+
+      <!-- 4. 用户名说明 -->
+      <div
+        style="border:1px solid var(--border);border-left:3px solid var(--accent);padding:18px 22px;margin-bottom:28px;background:var(--bg-warm);">
+        <div
+          style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">
+          如何确认你的用户名</div>
+        <p style="font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:10px;">公司 IT 配置的 Windows
+          用户名通常是英文，不一定是你自己的名字。两种方式确认：</p>
+        <div style="font-size:13px;color:var(--muted);line-height:1.9;">
+          <span style="display:block;">&#9312; 打开 PowerShell，输入 <code
+              style="font-family:var(--mono);font-size:12px;background:var(--bg-code);padding:1px 6px;">whoami</code>
+            回车，显示的就是你的用户名</span>
+          <span style="display:block;">&#9313; 打开文件资源管理器，在地址栏输入 <code
+              style="font-family:var(--mono);font-size:12px;background:var(--bg-code);padding:1px 6px;">C:\Users</code>
+            回车，看你的文件夹名称</span>
+        </div>
+      </div>
+
+      <!-- 5. 目录结构 -->
+      <div style="margin-bottom:20px;">
+        <div
+          style="font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;">
+          目录结构</div>
+        <div class="file-tree">
+          <div class="file-tree-root">C:\Users\你的用户名\.claude\</div>
+          <div class="file-tree-dir">&#9500;&#9472;&#9472; CLAUDE.md &nbsp;&nbsp;&nbsp;&nbsp;<span class="file-tree-comment">&larr; 全局指令</span>
+          </div>
+          <div class="file-tree-dir">&#9500;&#9472;&#9472; settings.json &nbsp;<span class="file-tree-comment">&larr; 技术设置</span></div>
+          <div class="file-tree-dir">&#9500;&#9472;&#9472; memory\ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file-tree-comment">&larr;
+              长期记忆</span></div>
+          <div class="file-tree-dir" style="margin-bottom:14px;">&#9492;&#9472;&#9472; rules\
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="file-tree-comment">&larr; 规则文件</span></div>
+          <div class="file-tree-root">你的工作文件夹\</div>
+          <div class="file-tree-dir">&#9492;&#9472;&#9472; CLAUDE.md &nbsp;&nbsp;&nbsp;&nbsp;<span class="file-tree-comment">&larr; 项目指令</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. 各文件说明（行布局） -->
+      <div class="config-table">
+        <div class="config-row">
+          <div class="config-row-key">.claude\CLAUDE.md</div>
+          <div class="config-row-val">
+            <div class="config-row-title">全局指令 · 最重要</div>
+            <div class="config-row-desc">对你打开的所有项目都生效。适合放"不管干什么都适用"的偏好，如：所有回答用中文、解释技术内容用通俗语言、修改文件前先告诉我要改什么。安装脚本已预置了一份。
+            </div>
+          </div>
+        </div>
+        <div class="config-row">
+          <div class="config-row-key">工作文件夹\CLAUDE.md</div>
+          <div class="config-row-val">
+            <div class="config-row-title">项目指令 · 按需设置</div>
+            <div class="config-row-desc">只对当前这个文件夹生效。适合放项目专属背景，如：这个文件夹是整理用户反馈的、不要动「已归档」目录。打开项目时，Claude 会同时读取全局指令和项目指令。
+            </div>
+          </div>
+        </div>
+        <div class="config-row">
+          <div class="config-row-key">.claude\settings.json</div>
+          <div class="config-row-val">
+            <div class="config-row-title">技术设置 · 不需要手动改</div>
+            <div class="config-row-desc">存放 API 地址、密钥等技术参数，安装脚本已自动写好，一般不需要动。</div>
+          </div>
+        </div>
+        <div class="config-row">
+          <div class="config-row-key">.claude\memory\</div>
+          <div class="config-row-val">
+            <div class="config-row-title">长期记忆 · 自动维护</div>
+            <div class="config-row-desc">Claude 在对话中学到的值得跨会话记住的信息会自动存在这里，下次新会话也能记得，比如你的职位、常用的工作背景。</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tip-box" style="margin-top:24px;">
+        <div class="tip-box-label">如何修改全局指令</div>
+        <div class="tip-box-text">启动 Claude Code
+          后直接说：「帮我打开全局配置文件，我想加几条指令」，或者「我是产品经理，帮我在全局配置里加上：所有输出用中文、解释技术内容时用通俗语言、修改文件前先列出改动计划」——它会直接帮你写进去。</div>
+      </div>
+    </section>
+
+    <!-- 第八节：常见问题 -->
+    <section id="faq">
+      <div class="section-label">Section 08</div>
+      <div class="section-title">遇到问题？</div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q">双击 .bat 弹出蓝色「Windows 保护了你的电脑」</div>
+          <div class="faq-a">
+            <ul class="faq-a-steps">
+              <li class="faq-a-step" data-n="1.">点「更多信息」（蓝色小字链接）</li>
+              <li class="faq-a-step" data-n="2.">出现「仍要运行」按钮，点击即可</li>
+            </ul>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">弹出「用户账户控制」窗口</div>
+          <div class="faq-a">
+            这是 Windows 标准安全确认，脚本需要管理员权限来安装软件。直接点「是」即可。
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">安装中途卡住不动了</div>
+          <div class="faq-a">
+            关闭窗口后重新双击 .bat 文件运行。已完成的步骤会自动跳过，不需要从头开始。
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">输入 claude 提示「不是内部或外部命令」</div>
+          <div class="faq-a">
+            <ul class="faq-a-steps">
+              <li class="faq-a-step" data-n="1.">关闭当前 PowerShell 窗口</li>
+              <li class="faq-a-step" data-n="2.">重新打开一个新的 PowerShell 再试</li>
+              <li class="faq-a-step" data-n="3.">如果仍然不行，重启电脑后再试</li>
+            </ul>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">cmd 黑色窗口一闪而过就消失了</div>
+          <div class="faq-a">
+            <ul class="faq-a-steps">
+              <li class="faq-a-step" data-n="&rarr;">右键点击 .bat 文件</li>
+              <li class="faq-a-step" data-n="&rarr;">选择「以管理员身份运行」</li>
+            </ul>
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">安装过程中提示网络下载失败</div>
+          <div class="faq-a">
+            检查网络连接是否正常，确保能正常访问网页。如有代理或 VPN，先关闭后重试。网络恢复后重新双击 .bat 文件即可。
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 总结 -->
+    <div class="summary">
+      <div class="section-label">一句话总结</div>
+      <div class="summary-quote">
+        Claude Code = 装在你电脑上的 <em>AI 助理</em>，能直接读写你的文件，用 <em>API Key</em> 连接远程 AI 大脑，通过 <em>PowerShell 对话</em> 来操作。
+      </div>
+      <div class="summary-footer">
+        <span>Claude Code 安装指南 · Windows 版 · 面向非开发人员</span>
+        <span>安装问题请联系文件来源</span>
+      </div>
+    </div>
+
+  </div><!-- /.page -->
+
+  <script>
+    // -- 导航高亮 --
+    (function () {
+      var sections = document.querySelectorAll('section[id]');
+      var navLinks = document.querySelectorAll('nav ul li a');
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var id = entry.target.getAttribute('id');
+            navLinks.forEach(function (link) {
+              link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+            });
+          }
+        });
+      }, { rootMargin: '-10% 0px -80% 0px' });
+
+      sections.forEach(function (s) { observer.observe(s); });
+    })();
+
+    function copyData(btn) {
+      var text = btn.getAttribute('data-copy');
+      var origHTML = btn.innerHTML;
+      navigator.clipboard.writeText(text).then(function () {
+        btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M2 7l3 3 6-6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+        btn.classList.add('copied');
+        setTimeout(function () {
+          btn.innerHTML = origHTML;
+          btn.classList.remove('copied');
+        }, 1500);
+      });
+    }
+  </script>
+</body>
+
+</html>
